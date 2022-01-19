@@ -15,10 +15,10 @@ const Map = ()=>{
 
     return (
         <div>
-            <h1>Map</h1>
             <Box sx={{
               width:'100%',
               height:850,
+              pt:2
             }}>
                 <ReactMapGl
                   {...viewPort}

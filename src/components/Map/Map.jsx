@@ -1,29 +1,65 @@
 import { Box } from "@mui/system";
 import React, {useState} from "react";
-import ReactMapGl from 'react-map-gl'
+import ReactMapGl, { WebMercatorViewport } from 'react-map-gl'
+import useToggle from "../../hooks/useToggle";
 
-const Map = ()=>{
+// latitude: 37.7577,
+//    longitude: 122.437
+const Map = ( {coordinates, setCoordinates, setBounds} )=>{
+
+  const [isInitaizedCords, toggleIsInitaizedCords] = useToggle(false)
+
   const [viewPort, setViewPort] = useState({
-    latitude: 37.7577,
-    longitude: -122.4376,
-    width: "95%",
+    latitude: 0,
+    longitude: 0,
+    width: "100%",
     height: "100%",
-    zoom: 10
+    zoom: 11,
   })
-  // current map window with co-ordinates is viewPort. As user drags of scrolls view Port that contaings current co-ordinates changes
-  // console.log(viewPort);
+  // current map window with co-ordinates is viewPort. 
+  // As user drags of scrolls view Port that contaings current co-ordinates changes and 'onViewportChange' is executed
+    //  console.log(viewPort);
+    function getBoundaryCords(vp){
+      // returns sowthwest and northwest cordinates of map region
+      const bounds = {
+        ne:{ },
+        sw:{ }
+      }
+      const boundaries = new WebMercatorViewport(vp).getBounds()
+      
+      console.log();
+      [bounds.ne.lng , bounds.ne.lat] = boundaries[1]
+      console.log();
+      [bounds.sw.lng , bounds.sw.lat] = boundaries[0]
 
+      return bounds
+    }
     return (
         <div>
             <Box sx={{
               width:'100%',
               height:850,
-              pt:2
+              pt:2,
+              pr:2
             }}>
                 <ReactMapGl
                   {...viewPort}
                   mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-                  onViewportChange={viewport => setViewPort(viewport)}
+
+                  onViewportChange={viewport =>{
+                    // get the boundaries of the map displayed (i.e lat and long of corners of visible region of the map)
+                    const bounds = getBoundaryCords(viewport)
+                    // change the viewWindow data
+                    if(!isInitaizedCords && coordinates.lat){
+                      setViewPort({...viewport, latitude:coordinates.lat, longitude:coordinates.lng, width:'100%', bounds})
+                      toggleIsInitaizedCords()
+                    }
+                    else setViewPort({...viewport, width:'100%', bounds})
+                    // change the co-ordinates and boundaries
+                    setCoordinates({lat:viewPort.latitude, lng: viewPort.longitude})
+                    setBounds({...viewPort.bounds})
+                  } }
+
                   mapStyle='mapbox://styles/4everyhappy/ckylosdfn3lkx14l2dhot0rut'
                 >
                   

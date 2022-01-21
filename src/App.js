@@ -10,14 +10,33 @@ import getPlacesData from "./api";
 const App = ()=>{
     const [places, setPlaces] = useState([])
 
+    const [coordinates, setCoordinates] = useState({})
+    const [bounds, setBounds] = useState(null)
+    
+    // run this only after first render
+    useEffect(()=>{
+        // initailize to current coordinates using builtin browser navigotor api
+        console.log('rendered only once');
+        navigator.geolocation.getCurrentPosition( ( {coords: {latitude, longitude}} ) =>{
+            setCoordinates({lat:latitude, lng:longitude})
+        } ) 
+    }, [])
+    // run this when map co-ordinates & bounds changes
     useEffect(()=>{
         // get all restaurants
-        getPlacesData()
-            .then(data =>{
-                console.log(data);
-                setPlaces(data)
-            })
-    },[])
+        const timer = setTimeout(()=>{
+            if(bounds && bounds.ne){
+                getPlacesData(bounds.sw, bounds.ne)
+                     .then(data => {
+                         console.log(data); 
+                         setPlaces(data)    
+                     }) 
+            }
+        }, 500)
+
+        return () => clearTimeout(timer)
+               
+    },[coordinates, bounds])
 
     return (
         <div>
@@ -25,10 +44,16 @@ const App = ()=>{
             <Header />
             <Grid container spacing={1}>
                 <Grid item xs={12} md={4}>
-                    <List />
+                    <List 
+                        places={places}
+                    />
                 </Grid>
                 <Grid item xs={12} md={8}>
-                    <Map />
+                    <Map 
+                        coordinates={coordinates}
+                        setCoordinates={setCoordinates}
+                        setBounds={setBounds}
+                    />
                 </Grid>
             </Grid>
         </div>

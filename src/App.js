@@ -7,9 +7,10 @@ import Map from './components/Map/Map'
 import PlaceDetails from './components/PlaceDetails/PlaceDetails'
 import getPlacesData from "./api";
 
+let count =0
+
 const App = ()=>{
     const [places, setPlaces] = useState([])
-
     const [coordinates, setCoordinates] = useState({})
     const [bounds, setBounds] = useState(null)
     
@@ -25,11 +26,12 @@ const App = ()=>{
     useEffect(()=>{
         // get all restaurants
         const timer = setTimeout(()=>{
-            if(bounds && bounds.ne){
+            if(bounds && bounds.ne && count<3){
                 getPlacesData(bounds.sw, bounds.ne)
                      .then(data => {
                          console.log(data); 
-                         setPlaces(data)    
+                         setPlaces(data)  
+                         count+=1  
                      }) 
             }
         }, 500)

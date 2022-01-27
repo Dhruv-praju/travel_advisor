@@ -21,20 +21,26 @@ const PlaceDetails = ({ place })=>{
                             </Typography>
                             
                             <Box display='flex' alignItems='center'>
-                                <Review num={place.rating}/>
+                                <Review num={Number(place.rating)}/>
+
                                 <Typography variant='body1' component='div' pl={1}>
                                     {place.num_reviews} reviews
                                 </Typography>
                             </Box>
+
                             <Typography variant="subtitle2" component='div'>
                                 {`Ranked ${place.ranking}`}
                             </Typography>
+
                             <Typography variant="subtitle1" component='div'>
+
                                 {place.cuisine.map(c =>{
                                     const diet = place.dietary_restrictions
                                     if(!diet.filter(o => o.key===c.key).length) return c.name
                                 }).filter(Boolean).join(', ')}
+                                
                             </Typography>
+
                         </CardContent>
 
                     </CardActionArea>

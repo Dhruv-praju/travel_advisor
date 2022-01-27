@@ -1,11 +1,11 @@
 import { Box } from "@mui/system";
 import React, {useState} from "react";
-import ReactMapGl, { WebMercatorViewport } from 'react-map-gl'
+import ReactMapGl, { Marker, WebMercatorViewport } from 'react-map-gl'
 import useToggle from "../../hooks/useToggle";
-
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 // latitude: 37.7577,
 //    longitude: 122.437
-const Map = ( {coordinates, setCoordinates, setBounds} )=>{
+const Map = ( {coordinates, setCoordinates, setBounds, places} )=>{
 
   const [isInitaizedCords, toggleIsInitaizedCords] = useToggle(false)
 
@@ -62,7 +62,11 @@ const Map = ( {coordinates, setCoordinates, setBounds} )=>{
 
                   mapStyle='mapbox://styles/4everyhappy/ckylosdfn3lkx14l2dhot0rut'
                 >
-                  
+                  {places?.map(place => (
+                    <Marker key={place.location_id} latitude={Number(place.latitude)} longitude={Number(place.longitude)}>
+                      <LocationOnIcon fontSize="large" />
+                    </Marker>
+                  ))}
                 </ReactMapGl>
                 
             </Box>

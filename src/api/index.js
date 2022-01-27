@@ -3,7 +3,9 @@ import axios from "axios";
 
 const URL = 'https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary'
 
-
+const filterPlacesData = (places)=>{
+  return places.filter(place => Boolean(place.name))
+}
 const getPlacesData = async ( sw, ne) => {
     try {
         // request
@@ -20,7 +22,7 @@ const getPlacesData = async ( sw, ne) => {
             }
         })
         const { data } =  respData
-        return data
+        return filterPlacesData(data)
 
     } catch (error) {
         console.log('ERROR OCCURED !!'+error);

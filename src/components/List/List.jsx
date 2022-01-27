@@ -24,7 +24,7 @@ const List = ({ places })=>{
                     Restautants, Hotels & Attractions around you
                 </Typography>
                 
-                <Box pb={2}>
+                <Box pb={2} display='flex' alignItems='flex-end'>
                     <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
                         <InputLabel >Type</InputLabel>
                         <Select
@@ -51,19 +51,17 @@ const List = ({ places })=>{
                         <MenuItem value={4.5}>Above 4.5</MenuItem>
                         </Select>
                     </FormControl>
+
+                    <Typography variant="body1" component='div' pb={1} pl={2}>
+                        {`found (${places.length})`}
+                    </Typography>
                 </Box>
 
                 <Grid container spacing={2} sx={{height:'48rem', overflow:'auto'}}>
-                    {places?.map((place, i) => (
-                        
-                        place.name 
-                        ?
-                            <Grid key={i} item xs={12}>
+                    {places?.map((place, i) => 
+                            <Grid key={place.location_id} item xs={12}>
                                 <PlaceDetails place={place}/>
                             </Grid>
-
-                        : ''
-                    )
                     )}
                 </Grid>
             </Box>

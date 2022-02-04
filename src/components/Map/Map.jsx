@@ -8,7 +8,6 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
 
   const initializeMap = () => {
-
     setViewPort((prevViewport) => ({
       ...prevViewport,
       latitude: coordinates.lat,
@@ -16,6 +15,7 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
     }));
 
     setViewPort((prevViewport) => {
+      console.log(prevViewport);
       let b = getBoundaryCords(prevViewport);
       setBounds(b);
       return {
@@ -23,6 +23,8 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
         bounds: b
       };
     });
+    console.log('Initialized');
+    toggleInitialized()
   };
 
   const getBoundaryCords = (vp) => {
@@ -41,21 +43,17 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
     return bounds
   }
 
-  const [viewport, setViewPort] = useState(
-    new WebMercatorViewport({
+  const [viewport, setViewPort] = useState({
       width: 800,
       height: 800,
       zoom: 10,
-      padding: 20,
-      offset: [0, -100]
-    })
+    }
   )
-
+  const [initialized, toggleInitialized] = useToggle(false)
   // current map window with co-ordinates is viewport. 
   // As user drags of scrolls view Port that contaings current co-ordinates changes and 'onViewportChange' is executed
 
     useEffect(initializeMap, [gotCords]);
-    console.log('RENDERING MAP');
     return (
         <div>
             <Box sx={{
@@ -69,17 +67,19 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
                   
                   mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
 
-                  onViewportChange={currviewport =>{
+                  onViewportChange={nextViewport =>{
                     // get the boundaries of the map displayed (i.e lat and long of corners of visible region of the map)
-                    const currbounds = getBoundaryCords(currviewport)
+                    console.log('CHANGING VIEW');
+                    const nextBounds = getBoundaryCords(nextViewport)
                     // change the viewWindow data
-                    setViewPort({...currviewport, bounds:currbounds})
+                    if(initialized) setViewPort({...nextViewport, bounds:nextBounds})
+                    else setViewPort({...nextViewport, width:'100%', height:'100%', bounds:nextBounds})
                     // change the co-ordinates and boundaries
                     setCoordinates({
-                      lat:currviewport.latitude,
-                      lng: currviewport.longitude
+                      lat:nextViewport.latitude,
+                      lng: nextViewport.longitude
                     })
-                    setBounds({...currbounds})
+                    setBounds({...nextBounds})
                     console.log('CHANGED VIEW');
                   } }
 

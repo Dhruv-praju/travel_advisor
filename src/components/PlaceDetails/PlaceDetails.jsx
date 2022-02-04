@@ -10,7 +10,7 @@ const PlaceDetails = ({ place })=>{
                     component='img'
                     height='auto'
                     sx={{width:140}}
-                    image={place.photo.images.small.url}
+                    image={place.photo?.images.small.url}
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <CardActionArea onClick={()=>window.open(place.web_url, '_blank')}>

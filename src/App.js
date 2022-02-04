@@ -27,7 +27,6 @@ const App = ()=>{
     
     useEffect(()=>{
         // get all restaurants
-        console.log('CALLING');
         const timer = setTimeout(()=>{
             console.log(count, bounds);
             if(bounds && bounds.ne && count<3){
@@ -45,18 +44,17 @@ const App = ()=>{
     },[coordinates, bounds])
 
     useEffect(getCurrentCoordinates, [])
-    console.log('RENDERING APP');
     return (
         <div>
             <CssBaseline />
             <Header />
             <Grid container spacing={1}>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={5} lg={4}>
                     <List 
                         places={places}
                     />
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={7} lg={8}>
                     <Map 
                         coordinates={coordinates}
                         setCoordinates={setCoordinates}

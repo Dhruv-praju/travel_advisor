@@ -23,7 +23,7 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
         bounds: b
       };
     });
-    console.log('Initialized');
+    
     toggleInitialized()
   };
 
@@ -59,8 +59,8 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
             <Box sx={{
               width:'100%',
               height:850,
-              pt:2,
-              pr:2
+              p:1.5,
+              
             }}>
                 <ReactMapGl
                   {...viewport}
@@ -69,7 +69,6 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
 
                   onViewportChange={nextViewport =>{
                     // get the boundaries of the map displayed (i.e lat and long of corners of visible region of the map)
-                    console.log('CHANGING VIEW');
                     const nextBounds = getBoundaryCords(nextViewport)
                     // change the viewWindow data
                     if(initialized) setViewPort({...nextViewport, bounds:nextBounds})
@@ -80,7 +79,6 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
                       lng: nextViewport.longitude
                     })
                     setBounds({...nextBounds})
-                    console.log('CHANGED VIEW');
                   } }
 
                   mapStyle='mapbox://styles/4everyhappy/ckylosdfn3lkx14l2dhot0rut'

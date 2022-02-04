@@ -17,7 +17,6 @@ const App = ()=>{
             toggleGotCords(true);
           }
         );
-        console.log('GOT LIVE COORDS');
       };
 
     const [places, setPlaces] = useState([])

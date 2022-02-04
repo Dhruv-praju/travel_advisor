@@ -10,22 +10,26 @@ import getPlacesData from "./api";
 let count =0
 
 const App = ()=>{
+    const getCurrentCoordinates = () => {
+        navigator.geolocation.getCurrentPosition(
+          ({ coords: { latitude, longitude } }) => {
+            setCoordinates({ lat: latitude, lng: longitude });
+            toggleGotCords(true);
+          }
+        );
+        console.log('GOT LIVE COORDS');
+      };
+
     const [places, setPlaces] = useState([])
     const [coordinates, setCoordinates] = useState({})
     const [bounds, setBounds] = useState(null)
+    const [gotCords, toggleGotCords] = useState(false);
     
-    // run this only after first render
-    useEffect(()=>{
-        // initailize to current coordinates using builtin browser navigotor api
-        console.log('rendered only once');
-        navigator.geolocation.getCurrentPosition( ( {coords: {latitude, longitude}} ) =>{
-            setCoordinates({lat:latitude, lng:longitude})
-        } ) 
-    }, [])
-    // run this when map co-ordinates & bounds changes
     useEffect(()=>{
         // get all restaurants
+        console.log('CALLING');
         const timer = setTimeout(()=>{
+            console.log(count, bounds);
             if(bounds && bounds.ne && count<3){
                 getPlacesData(bounds.sw, bounds.ne)
                      .then(data => {
@@ -40,6 +44,8 @@ const App = ()=>{
                
     },[coordinates, bounds])
 
+    useEffect(getCurrentCoordinates, [])
+    console.log('RENDERING APP');
     return (
         <div>
             <CssBaseline />
@@ -55,6 +61,7 @@ const App = ()=>{
                         coordinates={coordinates}
                         setCoordinates={setCoordinates}
                         setBounds={setBounds}
+                        gotCords={gotCords}
                         places={places}
                     />
                 </Grid>

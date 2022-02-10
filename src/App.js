@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { CssBaseline, Grid } from "@mui/material";
+import { CssBaseline, Grid} from "@mui/material";
 
 import Header from "./components/Header/Header";
 import List from './components/List/List'
@@ -25,16 +25,19 @@ const App = ()=>{
     const [bounds, setBounds] = useState(null)
     const [gotCords, toggleGotCords] = useToggle(false);
     const [placeClicked, setPlaceClicked] = useState(null);
+    const [isLoading, toggleIsLoading] = useToggle(true)
     
     useEffect(()=>{
         // get all restaurants
+
         const timer = setTimeout(()=>{
             console.log(count, bounds);
             if(bounds && bounds.ne && count<3){
                 getPlacesData(bounds.sw, bounds.ne)
                      .then(data => {
                          console.log(data); 
-                         setPlaces(data)  
+                         setPlaces(data)
+                         toggleIsLoading()
                          count+=1  
                      }) 
             }
@@ -51,7 +54,8 @@ const App = ()=>{
             <Header />
             <Grid container spacing={1}>
                 <Grid item xs={12} md={5} lg={4}>
-                    <List 
+                    <List
+                        isLoading={isLoading}
                         places={places}
                         placeClicked={placeClicked}
                     />

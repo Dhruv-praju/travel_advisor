@@ -6,6 +6,7 @@ import List from './components/List/List'
 import Map from './components/Map/Map'
 import PlaceDetails from './components/PlaceDetails/PlaceDetails'
 import getPlacesData from "./api";
+import useToggle from "./hooks/useToggle";
 
 let count =0
 
@@ -14,7 +15,7 @@ const App = ()=>{
         navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude, longitude } }) => {
             setCoordinates({ lat: latitude, lng: longitude });
-            toggleGotCords(true);
+            toggleGotCords();
           }
         );
       };
@@ -22,7 +23,8 @@ const App = ()=>{
     const [places, setPlaces] = useState([])
     const [coordinates, setCoordinates] = useState({})
     const [bounds, setBounds] = useState(null)
-    const [gotCords, toggleGotCords] = useState(false);
+    const [gotCords, toggleGotCords] = useToggle(false);
+    const [placeClicked, setPlaceClicked] = useState(null);
     
     useEffect(()=>{
         // get all restaurants
@@ -51,6 +53,7 @@ const App = ()=>{
                 <Grid item xs={12} md={5} lg={4}>
                     <List 
                         places={places}
+                        placeClicked={placeClicked}
                     />
                 </Grid>
                 <Grid item xs={12} md={7} lg={8}>
@@ -60,6 +63,7 @@ const App = ()=>{
                         setBounds={setBounds}
                         gotCords={gotCords}
                         places={places}
+                        setPlaceClicked={setPlaceClicked}
                     />
                 </Grid>
             </Grid>

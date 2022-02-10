@@ -1,11 +1,12 @@
 import { Box } from "@mui/system";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import ReactMapGl, { Marker, WebMercatorViewport } from 'react-map-gl'
 import useToggle from "../../hooks/useToggle";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { IconButton } from "@mui/material";
 // latitude: 37.7577,
 //    longitude: 122.437
-const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
+const Map = ( {coordinates, setCoordinates, setBounds, setPlaceClicked, places, gotCords} )=>{
 
   const initializeMap = () => {
     setViewPort((prevViewport) => ({
@@ -52,7 +53,6 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
   const [initialized, toggleInitialized] = useToggle(false)
   // current map window with co-ordinates is viewport. 
   // As user drags of scrolls view Port that contaings current co-ordinates changes and 'onViewportChange' is executed
-
     useEffect(initializeMap, [gotCords]);
     return (
         <div>
@@ -84,10 +84,20 @@ const Map = ( {coordinates, setCoordinates, setBounds, places, gotCords} )=>{
                   mapStyle='mapbox://styles/4everyhappy/ckylosdfn3lkx14l2dhot0rut'
                 >
                   {places?.map(place => (
-                    <Marker key={place.location_id} latitude={Number(place.latitude)} longitude={Number(place.longitude)}>
-                      <LocationOnIcon fontSize="large" />
+                    <Marker 
+                      key={place.location_id} 
+                      latitude={Number(place.latitude)} 
+                      longitude={Number(place.longitude)}
+                    >
+                      <IconButton onClick={e => setPlaceClicked(place.location_id)} size='small'>
+                        <LocationOnIcon
+                          color="black"
+                          fontSize="large" 
+                        />
+                      </IconButton>
                     </Marker>
                   ))}
+
                 </ReactMapGl>
                 
             </Box>

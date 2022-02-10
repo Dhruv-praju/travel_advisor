@@ -25,7 +25,8 @@ const getPlacesData = async ( sw, ne) => {
         return filterPlacesData(data)
 
     } catch (error) {
-        console.log('ERROR OCCURED !!'+error);
+        console.log('ERROR OCCURED WHILE CALLING API !!');
+        console.log(error);
     }
 }
 

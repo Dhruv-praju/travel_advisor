@@ -1,10 +1,16 @@
-import React from "react";
+import React,{forwardRef} from "react";
 import {Box, Typography, Card, CardContent, CardMedia, CardActionArea, CardActions, Button} from '@mui/material'
 import './review.css'
 
-const PlaceDetails = ({ place })=>{
+const PlaceDetails = ({ place, selected, refProp})=>{
+
+    if(selected) {
+        console.log('PLACE U SELECTED IS: ');
+        console.log(place);
+        // console.log(refProp.current);
+        refProp?.current?.scrollIntoView({behaviour: 'smooth', block:'start'})
+    }
     return (
-        <div>
             <Card sx={{display:'flex'}}>
                 <CardMedia
                     component='img'
@@ -46,7 +52,6 @@ const PlaceDetails = ({ place })=>{
                     </CardActionArea>
                 </Box>
             </Card>
-        </div>
     )
 }
 

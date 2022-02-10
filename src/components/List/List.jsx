@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React from "react";
+import React,{useState, useEffect, createRef} from "react";
 import { Box } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -8,10 +8,20 @@ import Select from '@mui/material/Select';
 import useFormState from '../../hooks/useFormState'
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
-const List = ({ places })=>{
-    const [type, handleType] = useFormState('restaurants')
+const List = ({ places, placeClicked })=>{
 
+    const [type, handleType] = useFormState('restaurants')
     const [rating, handleRating] = useFormState()
+    const [elRefs, setElRefs] = useState([])
+
+    console.log({placeClicked});
+    
+    useEffect(()=>{
+        setElRefs(refs => Array(places.length).fill().map((_,i) => (
+            refs[i] || createRef()
+       )))
+
+    }, [places])
     return (
         <div>
             <Box
@@ -53,15 +63,22 @@ const List = ({ places })=>{
                     </FormControl>
 
                     <Typography variant="body1" component='div' pb={1} pl={2}>
-                        {`found (${places.length})`}
+                        {`found (${places?.length})`}
                     </Typography>
                 </Box>
 
                 <Grid container spacing={2} sx={{height:'48rem', overflow:'auto'}}>
-                    {places?.map((place, i) => 
-                            <Grid key={place.location_id} item xs={12}>
-                                <PlaceDetails place={place}/>
+                    {places?.map((place, i) => {
+                        return(
+                            <Grid ref={elRefs[i]} item key={place.location_id} xs={12}>
+                                <PlaceDetails 
+                                    place={place}
+                                    refProp={elRefs[i]}
+                                    selected={placeClicked === place.location_id}
+                                />
                             </Grid>
+                        )
+                    }
                     )}
                 </Grid>
             </Box>

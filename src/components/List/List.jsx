@@ -13,8 +13,6 @@ const List = ({ places, placeClicked })=>{
     const [type, handleType] = useFormState('restaurants')
     const [rating, handleRating] = useFormState()
     const [elRefs, setElRefs] = useState([])
-
-    console.log({placeClicked});
     
     useEffect(()=>{
         setElRefs(refs => Array(places.length).fill().map((_,i) => (
@@ -23,7 +21,6 @@ const List = ({ places, placeClicked })=>{
 
     }, [places])
     return (
-        <div>
             <Box
                 sx={{
                     pt:4,
@@ -67,7 +64,7 @@ const List = ({ places, placeClicked })=>{
                     </Typography>
                 </Box>
 
-                <Grid container spacing={2} sx={{height:'48rem', overflow:'auto'}}>
+                <Grid container spacing={2} sx={{height:'42rem', overflow:'auto'}}>
                     {places?.map((place, i) => {
                         return(
                             <Grid ref={elRefs[i]} item key={place.location_id} xs={12}>
@@ -82,7 +79,6 @@ const List = ({ places, placeClicked })=>{
                     )}
                 </Grid>
             </Box>
-        </div>
     )
 }
 

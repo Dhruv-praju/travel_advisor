@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, createRef} from "react";
 import ReactMapGl, { Marker, WebMercatorViewport } from 'react-map-gl'
 import useToggle from "../../hooks/useToggle";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -35,7 +35,6 @@ const Map = ( {coordinates, setCoordinates, setBounds, setPlaceClicked, places, 
       sw:{ }
     }
     const boundaries = new WebMercatorViewport(vp).getBounds()
-    
     console.log();
     [bounds.ne.lng , bounds.ne.lat] = boundaries[1]
     console.log();
@@ -55,7 +54,6 @@ const Map = ( {coordinates, setCoordinates, setBounds, setPlaceClicked, places, 
   // As user drags of scrolls view Port that contaings current co-ordinates changes and 'onViewportChange' is executed
     useEffect(initializeMap, [gotCords]);
     return (
-        <div>
             <Box sx={{
               width:'100%',
               height:850,
@@ -83,25 +81,40 @@ const Map = ( {coordinates, setCoordinates, setBounds, setPlaceClicked, places, 
 
                   mapStyle='mapbox://styles/4everyhappy/ckylosdfn3lkx14l2dhot0rut'
                 >
-                  {places?.map(place => (
+                  {places?.map(place => {
+
+                    const locIconRef = createRef()
+
+                    return (
                     <Marker 
                       key={place.location_id} 
                       latitude={Number(place.latitude)} 
                       longitude={Number(place.longitude)}
                     >
-                      <IconButton onClick={e => setPlaceClicked(place.location_id)} size='small'>
+                      <IconButton 
+                        ref={locIconRef}
+                        onClick={e => setPlaceClicked(place.location_id)} 
+                        // onMouseEnter={e => locIconRef.current.style.color='red'}
+                        // onMouseLeave={e => locIconRef.current.style.color='black'}
+                        sx={theme => ({
+                          'color': theme.palette.grey[900],
+                          '&:hover':{color: theme.palette.error.main}
+                        })}
+                        size='small'
+                        // color="primary"
+                      >
                         <LocationOnIcon
-                          color="black"
+                          // color="black"
                           fontSize="large" 
                         />
                       </IconButton>
                     </Marker>
-                  ))}
+                  )})
+                  }
 
                 </ReactMapGl>
                 
             </Box>
-        </div>
     )
 }
 

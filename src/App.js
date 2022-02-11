@@ -25,10 +25,11 @@ const App = ()=>{
     const [bounds, setBounds] = useState(null)
     const [gotCords, toggleGotCords] = useToggle(false);
     const [placeClicked, setPlaceClicked] = useState(null);
-    const [isLoading, toggleIsLoading] = useToggle(true)
+    const [isLoading, toggleIsLoading] = useState(false)
     
     useEffect(()=>{
         // get all restaurants
+        toggleIsLoading(true)
 
         const timer = setTimeout(()=>{
             console.log(count, bounds);
@@ -37,11 +38,12 @@ const App = ()=>{
                      .then(data => {
                          console.log(data); 
                          setPlaces(data)
-                         toggleIsLoading()
+                         toggleIsLoading(false)
                          count+=1  
                      }) 
             }
-        }, 500)
+            else alert('You have reached the limit !')
+        }, 1000)
 
         return () => clearTimeout(timer)
                

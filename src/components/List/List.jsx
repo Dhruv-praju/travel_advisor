@@ -8,9 +8,8 @@ import Select from '@mui/material/Select';
 import useFormState from '../../hooks/useFormState'
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
-const List = ({ isLoading, places, placeClicked, type, setType })=>{
+const List = ({ isLoading, places, placeClicked, type, setType, rating, handleRating })=>{
 
-    const [rating, handleRating] = useFormState()
     const [elRefs, setElRefs] = useState([])
     
     useEffect(()=>{

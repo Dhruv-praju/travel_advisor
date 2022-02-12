@@ -27,6 +27,8 @@ const App = ()=>{
     const [gotCords, toggleGotCords] = useToggle(false);
     const [placeClicked, setPlaceClicked] = useState(null);
     const [type, setType] = useFormState('restaurants')
+    const [rating, handleRating, resetRating] = useFormState('')
+    const [filteredPlaces, setFilteredPlaces] = useState([])
     const [isLoading, toggleIsLoading] = useState(false)
     
     useEffect(()=>{
@@ -40,6 +42,8 @@ const App = ()=>{
                      .then(data => {
                          console.log(data); 
                          setPlaces(data)
+                         setFilteredPlaces([])
+                         resetRating()
                          toggleIsLoading(false)
                          count+=1  
                      }) 
@@ -51,6 +55,12 @@ const App = ()=>{
                
     },[type, coordinates, bounds])
 
+    useEffect(()=>{
+        // filter places based on rating
+        setFilteredPlaces(places.filter(place => place.rating > rating))
+
+    }, [rating])
+
     useEffect(getCurrentCoordinates, [])
     return (
         <div>
@@ -60,10 +70,12 @@ const App = ()=>{
                 <Grid item xs={12} md={5} lg={4}>
                     <List
                         isLoading={isLoading}
-                        places={places}
+                        places={filteredPlaces.length ? filteredPlaces : places}
                         placeClicked={placeClicked}
                         type={type}
                         setType={setType}
+                        rating={rating}
+                        handleRating={handleRating}
                     />
                 </Grid>
                 <Grid item xs={12} md={7} lg={8}>
@@ -72,7 +84,7 @@ const App = ()=>{
                         setCoordinates={setCoordinates}
                         setBounds={setBounds}
                         gotCords={gotCords}
-                        places={places}
+                        places={filteredPlaces.length ? filteredPlaces : places}
                         setPlaceClicked={setPlaceClicked}
                     />
                 </Grid>

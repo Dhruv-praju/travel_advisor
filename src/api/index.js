@@ -1,14 +1,15 @@
 // HERE GOES ALL API CALLS
 import axios from "axios";
 
-const URL = 'https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary'
 
 const filterPlacesData = (places)=>{
   return places.filter(place => Boolean(place.name))
 }
-const getPlacesData = async ( sw, ne) => {
-    try {
-        // request
+const getPlacesData = async (type, sw, ne) => {
+  try {
+    // request
+        const URL = `https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`
+
         const { data: respData } = await axios.get(URL, {
             params: {
               bl_latitude:  sw.lat,

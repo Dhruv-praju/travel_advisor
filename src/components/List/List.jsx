@@ -8,9 +8,8 @@ import Select from '@mui/material/Select';
 import useFormState from '../../hooks/useFormState'
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
-const List = ({ isLoading, places, placeClicked })=>{
+const List = ({ isLoading, places, placeClicked, type, setType })=>{
 
-    const [type, handleType] = useFormState('restaurants')
     const [rating, handleRating] = useFormState()
     const [elRefs, setElRefs] = useState([])
     
@@ -42,7 +41,7 @@ const List = ({ isLoading, places, placeClicked })=>{
                             <InputLabel >Type</InputLabel>
                             <Select
                             value={type}
-                            onChange={handleType}
+                            onChange={setType}
                             label="Type"
                             >
                             <MenuItem value='restaurants'>Restaurants</MenuItem>

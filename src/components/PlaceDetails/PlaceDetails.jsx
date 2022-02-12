@@ -39,7 +39,7 @@ const PlaceDetails = ({ place, selected, refProp})=>{
 
                             <Typography variant="subtitle1" component='div'>
 
-                                {place.cuisine.map(c =>{
+                                {place?.cuisine?.map(c =>{
                                     const diet = place.dietary_restrictions
                                     if(!diet.filter(o => o.key===c.key).length) return c.name
                                 }).filter(Boolean).join(', ')}

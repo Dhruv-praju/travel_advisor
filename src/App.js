@@ -7,6 +7,7 @@ import Map from './components/Map/Map'
 import PlaceDetails from './components/PlaceDetails/PlaceDetails'
 import getPlacesData from "./api";
 import useToggle from "./hooks/useToggle";
+import useFormState from './hooks/useFormState'
 
 let count =0
 
@@ -25,16 +26,17 @@ const App = ()=>{
     const [bounds, setBounds] = useState(null)
     const [gotCords, toggleGotCords] = useToggle(false);
     const [placeClicked, setPlaceClicked] = useState(null);
+    const [type, setType] = useFormState('restaurants')
     const [isLoading, toggleIsLoading] = useState(false)
     
     useEffect(()=>{
-        // get all restaurants
+        // get all places
         toggleIsLoading(true)
 
         const timer = setTimeout(()=>{
             console.log(count, bounds);
             if(bounds && bounds.ne && count<3){
-                getPlacesData(bounds.sw, bounds.ne)
+                getPlacesData(type, bounds.sw, bounds.ne)
                      .then(data => {
                          console.log(data); 
                          setPlaces(data)
@@ -43,11 +45,11 @@ const App = ()=>{
                      }) 
             }
             else alert('You have reached the limit !')
-        }, 1000)
+        }, 500)
 
         return () => clearTimeout(timer)
                
-    },[coordinates, bounds])
+    },[type, coordinates, bounds])
 
     useEffect(getCurrentCoordinates, [])
     return (
@@ -60,6 +62,8 @@ const App = ()=>{
                         isLoading={isLoading}
                         places={places}
                         placeClicked={placeClicked}
+                        type={type}
+                        setType={setType}
                     />
                 </Grid>
                 <Grid item xs={12} md={7} lg={8}>

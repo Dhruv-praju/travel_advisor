@@ -42,6 +42,7 @@ const PlaceDetails = ({ place, selected, refProp})=>{
                                 {place?.cuisine?.map(c =>{
                                     const diet = place.dietary_restrictions
                                     if(!diet.filter(o => o.key===c.key).length) return c.name
+                                    return null
                                 }).filter(Boolean).join(', ')}
                                 
                             </Typography>

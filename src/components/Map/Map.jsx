@@ -4,6 +4,14 @@ import ReactMapGl, { Marker, WebMercatorViewport } from 'react-map-gl'
 import useToggle from "../../hooks/useToggle";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { IconButton } from "@mui/material";
+
+/**MAPBOX DEPOLY ERROR FIX (MAP IS BLANK) */
+import mapboxgl from "mapbox-gl"; // This is a dependency of react-map-gl even if you didn't explicitly install it
+
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+
+
 // latitude: 37.7577,
 //    longitude: 122.437
 const Map = ( {coordinates, setCoordinates, setBounds, setPlaceClicked, places, gotCords} )=>{

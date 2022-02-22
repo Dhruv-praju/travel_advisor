@@ -26,7 +26,7 @@ const List = ({ isLoading, places, placeClicked, type, setType, rating, handleRa
                 }}
             >
                 <Typography variant="h4">
-                    Restautants, Hotels & Attractions around you
+                    Restaurants, Hotels & Attractions around you
                 </Typography>
 
                 {isLoading

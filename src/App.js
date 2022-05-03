@@ -39,7 +39,7 @@ const App = ()=>{
 
         const timer = setTimeout(()=>{
             console.log(count, bounds);
-            if(bounds && bounds.ne && count<3){
+            if(bounds && bounds.ne && count<10){
                 getPlacesData(type, bounds.sw, bounds.ne)
                      .then(data => {
                          console.log(data); 
